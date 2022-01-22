@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <title>김 진 욱</title>
+  <meta charset="utf-8">
+  <script src="fetch/fetch.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 부트스트랩 -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="colors.js"></script>
+  <style>
+    li {  margin: 20px 0px;}
+  </style>
+</head>
+<body class="container-fluid">
+  <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+  <script src="js/bootstrap.min.js"></script>
+  <div class="row">
+    <div class="col-md-2">
+      <h1>이 력 서</h1>
+      <input id="night_day" type="button" value="다크 모드 ON" onclick="nightDayHandler(this);">
+      <input type="button" value="첫 화면" href="#!welcome" onclick = "fetchPage('welcome');">
+      
+      <ul id="nav">
+      </ul>
+    </div>
+    <div class="col-md-10">
+      <article class="row">
+      </article>
+    </div>
+  </div>
+  <script>
+    function fetchPage(name){
+      fetch(name).then(function(response){
+        response.text().then(function(text){
+          document.querySelector('article').innerHTML = text;
+        })
+      });
+    }
+    if(location.hash){
+      fetchPage(location.hash.substr(2));
+    } else {
+      fetchPage('welcome');
+    }
+    fetch('list').then(function(response){
+      response.text().then(function(text){
+        var items = text.split(',');
+        var i = 0;
+        var tags = '';
+        while(i<items.length){
+          var item = items[i];
+          item = item.trim();
+          var tag = '<li><a href="#!'+item+'" onclick = "fetchPage(\''+item+'\')">'+item+'</a></li>';
+          tags = tags + tag;
+          i = i + 1;
+        }
+        document.querySelector('#nav').innerHTML = tags;
+      })
+    });
+  </script>
+</body>
+</html>
